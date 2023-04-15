@@ -33,7 +33,7 @@ export default function Evaluacion(props:any) : JSX.Element {
             }
         }else{
             setStatus("Error");
-            console.warn("The MediaRecorder API is not supported in your browser.");
+            console.warn("The MediaRecorder API is not supported in your PC.");
             Swal.fire({
                 title:'',
                 text:'No es posible acceder a cámara y video!',
