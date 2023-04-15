@@ -64,7 +64,6 @@ export default function Evaluacion(props:any) : JSX.Element {
     }
 
     const StopRecording = function(){
-        // setRecording(false);
         try {
             mediaRecorder.current.stop();
             mediaRecorder.current.onstop = () => {
@@ -82,7 +81,8 @@ export default function Evaluacion(props:any) : JSX.Element {
 
     const SuccessCallback = (stream:any) => {
         liveVideoFeed.current.srcObject = stream;
-        setStream(stream);
+        const VideoStream:MediaStream | null = new MediaStream([...stream.getVideoTracks(),...stream.getAudioTracks(),]);
+        setStream(VideoStream);
     }
 
     const ErrorCallBack = (error:unknown) => {
@@ -91,7 +91,7 @@ export default function Evaluacion(props:any) : JSX.Element {
 
     return (
         <div className='page-div'>
-            <Header active="evaluacion"/>
+            <Header selected="evaluacion"/>
             {["Allowed","Recording"].includes(Status) ? 
                 <video autoPlay width={640} height={480} ref={liveVideoFeed} className='border border-slate-800 shadow-md rounded-lg self-center'/>
                 :
