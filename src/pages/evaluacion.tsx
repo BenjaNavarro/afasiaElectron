@@ -9,6 +9,15 @@ export default function Evaluacion(props:any) : JSX.Element {
     //    11            ||========================||
     // NotAllowed/Error
 
+    const StatusList = {
+        AWAITING:"Awaiting",
+        ALLOWED:"Allowed",
+        RECORDING:"Recording",
+        ONVIDEO:"OnVideo",
+        NOTALLOWED:"NotAllowed",
+        ERROR:"Error"
+    };
+
     const [Status, setStatus] = useState<string>("Awaiting");
     const [stream, setStream] = useState<any>();
     const [VideoChunks, setVideoChunks] = useState<any[]>([]);
@@ -18,7 +27,7 @@ export default function Evaluacion(props:any) : JSX.Element {
 
     useEffect(()=>{
         console.log({Status});
-        if(Status === "Allowed") GetUserPermission();
+        if(Status === StatusList.ALLOWED) GetUserPermission();
     },[Status]);
 
     async function GetUserPermission(){
@@ -32,7 +41,7 @@ export default function Evaluacion(props:any) : JSX.Element {
                 console.error({error});
             }
         }else{
-            setStatus("Error");
+            setStatus(StatusList.ERROR);
             console.warn("The MediaRecorder API is not supported in your PC.");
             Swal.fire({
                 title:'',
@@ -44,7 +53,7 @@ export default function Evaluacion(props:any) : JSX.Element {
 
     async function StartRecording(){
         try {
-            setStatus("Recording");
+            setStatus(StatusList.RECORDING);
             const media:MediaRecorder = new MediaRecorder(stream, { mimeType:"video/webm" });
             mediaRecorder.current = media;
             if(mediaRecorder.current){
@@ -58,7 +67,7 @@ export default function Evaluacion(props:any) : JSX.Element {
                 setVideoChunks(localVideoChunks);
             }
         } catch (error) {
-            setStatus("Error");
+            setStatus(StatusList.ERROR);
             console.error({error});
         }
     }
@@ -67,19 +76,19 @@ export default function Evaluacion(props:any) : JSX.Element {
         try {
             mediaRecorder.current.stop();
             mediaRecorder.current.onstop = () => {
-                const videoBlob:Blob = new Blob(VideoChunks, { type: "video/webm" });
+                const videoBlob:Blob = new Blob(VideoChunks, { type: "video/mp4" });
                 const videoURL:string = URL.createObjectURL(videoBlob);
                 setVideo(videoURL);
                 setVideoChunks([]);
-                setStatus("OnVideo");
+                setStatus(StatusList.ONVIDEO);
             }
         } catch (error) {
-            setStatus("Error");
+            setStatus(StatusList.ERROR);
             console.error({error});
         }
     }
 
-    const SuccessCallback = (stream:any) => {
+    const SuccessCallback = (stream:MediaStream) => {
         liveVideoFeed.current.srcObject = stream;
         const VideoStream:MediaStream | null = new MediaStream([...stream.getVideoTracks(),...stream.getAudioTracks(),]);
         setStream(VideoStream);
@@ -89,19 +98,27 @@ export default function Evaluacion(props:any) : JSX.Element {
         console.error({navigatorGetUserMediaError: error});
     };
 
+    // useEffect(()=>{
+    //     console.log({Video,liveVideoFeed,stream,mediaRecorder});
+    // },[Video,liveVideoFeed,stream,mediaRecorder]);
+
     return (
         <div className='page-div'>
             <Header selected="evaluacion"/>
-            {["Allowed","Recording"].includes(Status) ? 
-                <video autoPlay width={640} height={480} ref={liveVideoFeed} className='border border-slate-800 shadow-md rounded-lg self-center'/>
+            {[StatusList.ALLOWED,StatusList.RECORDING].includes(Status) ? 
+                <video autoPlay width={640} height={480} ref={liveVideoFeed} className='border border-slate-800 shadow-md rounded-lg self-center'>
+                    <source src={stream} type='video/webm'/>
+                </video>
                 :
-                ["OnVideo"].includes(Status) ?
-                    <video controls width={640} height={480} src={Video} className='border border-slate-800 shadow-md rounded-lg self-center'/> 
+                Status === StatusList.ONVIDEO ?
+                    <video controls autoPlay={false} ref={null} width={640} height={480} className='border border-slate-800 shadow-md rounded-lg self-center'>
+                        <source src={Video} type='video/mp4'/>
+                    </video> 
             :null}
             <div className='flex flex-row w-full justify-center mt-8'>
                 <button className='w-40 mx-4 h-10 btn-principal' 
                 onClick={()=>{
-                    if(Status === "Awaiting"){
+                    if(Status === StatusList.AWAITING){
                         Swal.fire({
                             title:'',
                             text:'¿Desea Solicitar permisos de Cámara y video?',
@@ -110,8 +127,8 @@ export default function Evaluacion(props:any) : JSX.Element {
                             showCancelButton:true,
                             cancelButtonText:'No'
                         }).then(((res:any) => {
-                            if(res.isConfirmed)setStatus("Allowed");
-                            else setStatus("NotAllowed")
+                            if(res.isConfirmed) return setStatus(StatusList.ALLOWED);
+                            else return setStatus(StatusList.NOTALLOWED);
                         }));
                     }else{
                         Swal.fire({
@@ -122,16 +139,16 @@ export default function Evaluacion(props:any) : JSX.Element {
                             showCancelButton:true,
                             cancelButtonText:'No'
                         }).then((async (res:any) => {
-                            if(res.isConfirmed)setStatus("Awaiting");
+                            if(res.isConfirmed) setStatus(StatusList.AWAITING);
                         }));
                     }
                 }}>
-                    { ["Allowed","Recording","OnVideo"].includes(Status) ? "Desactivar Cámara" : "Obtener Permisos"}
+                    { [StatusList.ALLOWED,StatusList.RECORDING,StatusList.ONVIDEO].includes(Status) ? "Desactivar Cámara" : "Obtener Permisos"}
                 </button>
-                { ["Allowed","Recording"].includes(Status) ?
+                { [StatusList.ALLOWED,StatusList.RECORDING].includes(Status) ?
                     <button className='w-40 mx-4 h-10 btn-principal'
                     onClick={()=>{
-                        if(Status === "Allowed"){
+                        if(Status === StatusList.ALLOWED){
                             Swal.fire({
                                 title:'',
                                 text:'¿Desea comenzar a grabar?',
@@ -155,11 +172,11 @@ export default function Evaluacion(props:any) : JSX.Element {
                             }));
                         }
                     }}>
-                        { Status !== "Allowed" ? "Detener Grabación" : "Grabar" }
+                        { Status !== StatusList.ALLOWED ? "Detener Grabación" : "Grabar" }
                     </button> 
                 : null}
             </div>
-            {Video && Status === "OnVideo" ?
+            {Video && Status === StatusList.ONVIDEO ?
                 <div className='flex w-full justify-center mt-2'>
                     <button className='text-2xl mr-2 btn-transparente' title='Guardar Archivo'>
                         <a className='contents' download href={Video}>

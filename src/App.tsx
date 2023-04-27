@@ -1,17 +1,16 @@
 import { createContext, useState, Suspense, lazy } from 'react';
-import Update from '@/components/update';
-import nodeLogo from './assets/node.svg';
 import './App.scss';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Loading from './components/utils/Loading';
 const Home = lazy(()=>import("./pages/home"));
 const Evaluacion = lazy(()=>import("./pages/evaluacion"));
+const Pacientes = lazy(()=>import("./pages/pacientes"));
 
 console.log('[App.tsx]', `Hello world from Electron ${process.versions.electron}!`);
 
 export const ThemeContext:any = createContext("");
 
-function App() {
+export default function App() : JSX.Element {
 
     const user = localStorage.getItem('userLoged') ? JSON.parse(localStorage.getItem('userLoged')||""): "";
 
@@ -37,8 +36,13 @@ function App() {
                     </ThemeContext.Provider>
                 </Suspense>
             }/>
+            <Route path='/pacientes' element={
+                <Suspense fallback={<Loading/>}>
+                    <ThemeContext.Provider value={{Theme,setTheme}}>
+                        <Pacientes/>
+                    </ThemeContext.Provider>
+                </Suspense>
+            }/>
         </Routes>
     );
 }
-
-export default App
