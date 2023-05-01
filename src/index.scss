@@ -4,12 +4,24 @@
 
 @layer components {
     .btn-principal {
-        @apply text-center text-slate-900 border rounded border-slate-800 hover:shadow-lg self-center;
+        @apply text-center text-slate-900 border rounded border-slate-800 hover:shadow-lg self-center focus:outline-none;
     };
     .page-div {
-        @apply w-[1366px] lg:w-full justify-center h-screen flex flex-col bg-slate-50 text-slate-900 text-center
+        @apply w-[1366px] lg:w-full justify-center h-screen flex flex-col bg-slate-50 text-slate-900 text-center;
     };
     .btn-transparente {
-        @apply self-center text-center hover:shadow-lg hover:outline hover:outline-1 hover:outline-slate-900 p-1 m-1 rounded-lg
+        @apply self-center text-center hover:shadow-lg hover:outline hover:outline-1 hover:outline-slate-900 p-1 m-1 rounded-lg;
+    };
+    .central-rounded-div {
+        @apply w-[90%] flex justify-center rounded-xl border border-slate-800 shadow-xl self-center max-h-[500px] overflow-y-auto;
+    };
+    .label-form {
+        @apply text-slate-900 text-left font-semibold self-center;
+    };
+    .input-form {
+        @apply text-center text-slate-900 border rounded border-slate-800 bg-slate-50 hover:bg-slate-100 focus:bg-slate-100 self-center p-2 placeholder:text-slate-500 focus:outline focus:outline-1 focus:outline-slate-700;
+    };
+    .button-submit {
+        @apply text-center text-slate-50 bg-slate-900 hover:bg-slate-800 hover:shadow-lg self-center rounded border border-slate-50 focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-500
     }
 }
