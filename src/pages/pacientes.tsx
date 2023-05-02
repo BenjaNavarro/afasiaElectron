@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import Header from '@/components/update/Header';
+import { useState } from 'react';
+import Header from '@/components/utils/Header';
 import TablaPacientes from '@/components/tablas/tablaPacientes';
 import CreacionPaciente from '@/components/forms/CreacionPaciente';
 

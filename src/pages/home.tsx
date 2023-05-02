@@ -1,16 +1,12 @@
-import { useEffect } from 'react';
-import Header from '@/components/update/Header';
+// import { useEffect } from 'react';
+import Header from '@/components/utils/Header';
 
-export default function home(props:any):JSX.Element {
-
-    // useEffect(()=>{
-    //     console.log({props});
-    // },[]);
+export default function Home(props:any):JSX.Element {
 
     return (
         <div className='page-div'>
             <Header selected="login"/>
-            Login
+            Home
         </div>
-    )
+    );
 }

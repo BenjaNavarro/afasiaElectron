@@ -1,23 +1,11 @@
 import { Dispatch, useEffect, useState } from 'react';
 import ReactDatePicker, { registerLocale } from "react-datepicker";
+import { IPacient, GenderOptions } from '@/assets/Constants';
 import "react-datepicker/dist/react-datepicker.css";
 import es from "date-fns/locale/es";
 registerLocale("es", es);
 
 export default function CreacionPaciente(props: any): JSX.Element{
-
-    interface IPacient {
-        id:string,
-        Nombre:string,
-        RUT:string,
-        FechaNacimiento:Date,
-        Email:string,
-        Telefono:string,
-        Genero:string,
-        Direccion:string,
-    }
-
-    const GenderOptions = [{value:"hombre",label:"Hombre"},{value:"mujer",label:"Mujer"},{value:"otro",label:"Otro"}];
 
     const [Paciente, setPaciente] = useState<Partial<IPacient>>({
         Nombre:"",
