@@ -1,8 +1,5 @@
 // In the preload script.
-const {
-  contextBridge,
-  ipcRenderer
-} = require("electron");
+const { contextBridge, ipcRenderer } = require("electron");
 
 function domReady(condition: DocumentReadyState[] = ['complete', 'interactive']) {
   return new Promise(resolve => {
@@ -45,7 +42,7 @@ function handleStream (stream:MediaStream) {
   video.onloadedmetadata = (e) => video.play()
 }
 
-function handleError (e) {
+function handleError (e:any) {
   console.log(e)
 }
 
@@ -122,8 +119,8 @@ function useLoading() {
 const { appendLoading, removeLoading } = useLoading()
 domReady().then(appendLoading)
 
-window.onmessage = (ev) => {
+window.onmessage = (ev:any) => {
   ev.data.payload === 'removeLoading' && removeLoading()
 }
 
-setTimeout(removeLoading, 4999)
+setTimeout(removeLoading, 4999);

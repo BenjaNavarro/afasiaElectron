@@ -20,4 +20,4 @@ export interface IPacient {
 
 export const Severidades: number[] = [ 0, 1, 2, 3, 4, 5 ];
 
-export const GenderOptions = [ {value:"hombre",label:"Hombre"}, {value:"mujer",label:"Mujer"}, {value:"otro",label:"Otro"} ];
+export const GenderOptions: { value: string, label: string }[] = [ {value:"hombre",label:"Hombre"}, {value:"mujer",label:"Mujer"}, {value:"otro",label:"Otro"} ];
