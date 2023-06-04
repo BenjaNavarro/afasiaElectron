@@ -1,8 +1,10 @@
 import { Dispatch, useEffect, useState } from 'react';
 import ReactDatePicker, { registerLocale } from "react-datepicker";
-import { IPacient, GenderOptions } from '@/assets/Constants';
+import { IndexableType } from 'dexie';
 import "react-datepicker/dist/react-datepicker.css";
 import es from "date-fns/locale/es";
+import { IPacient, GenderOptions } from '@/assets/Constants';
+import { DB } from '@/assets/DataBase';
 registerLocale("es", es);
 
 export default function CreacionPaciente(props: any): JSX.Element{
@@ -16,6 +18,13 @@ export default function CreacionPaciente(props: any): JSX.Element{
         Direccion:"",
         FechaNacimiento:new Date(),
     });
+
+    async function CrearPaciente(): Promise<void> {
+        const id: IndexableType = await DB.table("pacients").add({ Paciente });
+        console.log({id});
+        if(id) console.log("success!");
+        else console.log("failed!");
+    }
 
     return (
         <div className='central-rounded-div flex-col p-4'>
@@ -57,10 +66,10 @@ export default function CreacionPaciente(props: any): JSX.Element{
                 <div className='flex w-full my-1'>
                     <label className='label-form w-1/4 mr-[6.5%]'>Fecha de Nacimiento</label>
                     <ReactDatePicker selected={new Date(Paciente.FechaNacimiento||"")} locale="es" dateFormat="dd/MM/yyyy" dropdownMode="select" wrapperClassName="react-datepicker-wrapper" className='input-form w-full'
-                    onChange={(date:Date) => setPaciente({...Paciente,FechaNacimiento: date})} placeholderText="Fecha inicial" peekNextMonth showMonthDropdown showYearDropdown/>
+                    onChange={(date:Date) => setPaciente({...Paciente, FechaNacimiento: date})} placeholderText="Fecha inicial" peekNextMonth showMonthDropdown showYearDropdown/>
                 </div>
                 <div className='flex w-full justify-end my-1'>
-                    <button className='button-submit w-40 h-10' disabled={!Paciente.RUT || !Paciente.Nombre} title='Crear Paciente' onClick={_ => console.log({Paciente})}>
+                    <button className='button-submit w-40 h-10' title='Crear Paciente' onClick={_ => CrearPaciente()} disabled={ !Paciente.RUT || !Paciente.Nombre }>
                         Finalizar
                     </button>
                 </div>

@@ -1,22 +1,18 @@
 import Dexie, { Table } from 'dexie';
+import { IPacient } from './Constants';
 
-export interface Friend {
-    id?: number;
-    name: string;
-    age: number;
-}
 
-export class MySubClassedDexie extends Dexie {
+export class DexieDBSchema extends Dexie {
     // 'friends' is added by dexie when declaring the stores()
     // We just tell the typing system this is the case
-    friends!: Table<Friend>; 
+    pacients!: Table<IPacient>; 
 
     constructor() {
-        super('myDatabase');
+        super('PacientsDatabase');
         this.version(1).stores({
-            friends: '++id, name, age' // Primary key and indexed props
+            pacients: '++id, Nombre, RUT, FechaNacimiento, Email, Telefono, Genero, Direccion' // Primary key and indexed props
         });
     }
 }
 
-export const db = new MySubClassedDexie();
+export const DB = new DexieDBSchema();
