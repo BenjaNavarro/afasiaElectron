@@ -39,9 +39,7 @@ export default function TablaPacientes(props: any): JSX.Element {
                                         <FaPen className='btn-icon'/>
                                     </button>
                                     <button className='btn-tabla' title='Eliminar Paciente' 
-                                    onClick={() => { 
-                                        ConfirmationAlert("","Eliminará al paciente!").fire().then( res => { if(res.isConfirmed) EliminarPaciente(paciente.id) })
-                                    }}>
+                                    onClick={() => {  ConfirmationAlert("","Eliminará al paciente!").fire().then( res => { if(res.isConfirmed) EliminarPaciente(paciente.id) }) }}>
                                         <FaTrash className='btn-icon'/>
                                     </button>
                                     <button className='btn-tabla' title='Ver Paciente'>
