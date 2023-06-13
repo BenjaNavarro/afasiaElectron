@@ -1,16 +1,17 @@
 import Dexie, { Table } from 'dexie';
-import { IPacient } from './Constants';
+import { IFormulario, IPacient } from './Constants';
 
 
 export class DexieDBSchema extends Dexie {
-    // 'friends' is added by dexie when declaring the stores()
-    // We just tell the typing system this is the case
+    
     pacients!: Table<IPacient>; 
+    forms!: Table<IFormulario>;
 
     constructor() {
-        super('PacientsDatabase');
+        super('Database');
         this.version(1).stores({
-            pacients: '++id, Nombre, RUT, FechaNacimiento, Email, Telefono, Genero, Direccion' // Primary key and indexed props
+            pacients: '++id, Nombre, RUT, FechaNacimiento, Email, Telefono, Genero, Direccion',
+            forms: '++id, Numero, Diagnostico, FechaInicio, FechaTermino, SeveridadAfasia, Preguntas, paciente',
         });
     }
 }

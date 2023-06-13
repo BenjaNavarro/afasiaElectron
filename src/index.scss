@@ -23,5 +23,11 @@
     };
     .button-submit {
         @apply text-center text-slate-50 bg-slate-900 hover:bg-slate-800 hover:shadow-lg self-center rounded border border-slate-50 focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-500
-    }
+    };
+    .btn-tabla {
+        @apply flex justify-center items-center m-1 p-1;
+    };
+    .btn-icon {
+        @apply hover:scale-110;
+    };
 }
