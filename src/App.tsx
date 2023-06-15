@@ -25,7 +25,8 @@ export default function App() : JSX.Element {
             <Route path="/" element={
                 <Suspense fallback={<Loading/>}>
                     <ThemeContext.Provider value={{Theme,setTheme}}>
-                        <Home/>
+                        <Navigate to={"/pacientes"}/>
+                        {/* <Home/> */}
                     </ThemeContext.Provider>
                 </Suspense>
             }/>

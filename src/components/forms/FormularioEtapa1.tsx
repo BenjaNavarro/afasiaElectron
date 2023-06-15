@@ -1,8 +1,21 @@
 import { useEffect, useState } from 'react';
-import { IFormulario, Severidades } from '@/assets/Constants';
+import { IFormulario, IPacient, Severidades } from '@/assets/Constants';
 import ReactDatePicker from 'react-datepicker';
+import { differenceInYears } from "date-fns";
 
 export default function FormularioEtapa1(props:any):JSX.Element {
+
+    const Today = new Date();
+    const [Paciente, setPaciente] = useState<Partial<IPacient | null | undefined>>(null);
+
+    // useEffect(() => {
+    //     console.log({props});
+    // }, []);
+
+    useEffect(() => {
+        // console.log({FechaNacimiento:props.Paciente.FechaNacimiento});
+        if(props.Paciente) setPaciente(props.Paciente);
+    }, [props.Paciente]);
 
     const [Form, setForm] = useState<Partial<IFormulario>>({
         Numero:"",
@@ -16,9 +29,9 @@ export default function FormularioEtapa1(props:any):JSX.Element {
     return (
         <div className='central-rounded-div flex-col p-4 ml-6'>
             <div className='flex w-full my-1'>
-                <label className='label-form w-1/3 text-center'>Margarita Figueroa</label>
-                <label className='label-form w-1/3 text-center'>6.537.446-3</label>
-                <label className='label-form w-1/3 text-center'>09/10/1946</label>
+                <label className='label-form w-1/3 text-center'>{Paciente?.Nombre}</label>
+                <label className='label-form w-1/3 text-center'>{Paciente?.RUT}</label>
+                <label className='label-form w-1/3 text-center'>{Paciente?.FechaNacimiento ? differenceInYears(Paciente?.FechaNacimiento, Today)+ " Años" : ""}</label>
             </div>
             <div className='flex w-full my-1'>
                 <label className='label-form w-1/4'>Grado de Severidad</label>

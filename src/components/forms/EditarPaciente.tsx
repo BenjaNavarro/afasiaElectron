@@ -22,14 +22,14 @@ export default function EditarPaciente(props: any): JSX.Element {
     });
 
     async function ModificarPaciente(){
-        await DB.table("pacients").update(props.pacient.id, ModifiedPacient).then(function(result){
-            console.log({result});
-            if(result) SuccessAlert("","Se modificó el paciente").fire().then(res => { if(res.isConfirmed) window.location.reload() });
-            else ErrorAlert("","No se pudo modificar el paciente").fire();
-        });
+        // console.log({ModifiedPacient, props});
+        const Paciente = { ...ModifiedPacient };
+        const res = await DB.table("pacients").put({Paciente, id: props.pacient.id});
+        // console.log({res});
+        if(res) SuccessAlert("","Se modificó el paciente").fire().then(res => { if(res.isConfirmed) window.location.reload() });
+        else ErrorAlert("","No se pudo modificar el paciente").fire();
+        
     }
-
-    // useEffect(() => console.log(OriginalPacient), []);
 
     return (
         <div className='central-rounded-div flex-col p-2'>
