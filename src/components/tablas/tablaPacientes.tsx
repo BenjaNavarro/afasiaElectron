@@ -16,13 +16,10 @@ export default function TablaPacientes(props: any): JSX.Element {
     async function EliminarPaciente(id: string): Promise<PromiseExtended<void>> {
         LoadingAlert();
         await DB.table("pacients").where("id").equals(id).delete().then(res => {
-            // console.log({res});
             if(res > 0) SuccessAlert("", "Se eliminó el paciente correctamente").fire().then( res => { if(res.isConfirmed) window.location.reload() });
             else ErrorAlert("", "Ocurrió un error al eliminar el paciente").fire();
         });
     }
-
-    console.log({Pacientes});
 
     return (
         <div className='central-rounded-div'>

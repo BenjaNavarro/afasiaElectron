@@ -25,7 +25,7 @@ export default function VideoRecorder(props:any) {
     const liveVideoFeed:any = useRef(null);
 
     useEffect(()=>{
-        console.log({Status});
+        // console.log({Status});
         if(Status === StatusList.ALLOWED) GetUserPermission();
     },[Status]);
 

@@ -3,7 +3,7 @@ import Header from '@/components/utils/Header';
 import FormularioEtapa1 from '@/components/forms/FormularioEtapa1';
 import VideoRecorder from '@/components/utils/VideoRecorder';
 import { IPacient } from '@/assets/Constants';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { DB } from '@/assets/DataBase';
 import LoadingComponent from '@/components/utils/LoadingComponent';
 
@@ -35,6 +35,13 @@ export default function Evaluacion(props:any) : JSX.Element {
     return (
         <div className='page-div'>
             {/* <Header selected="evaluacion"/> */}
+            <div className='flex w-full justify-start p-6'>
+                <Link to="/pacientes" className="contents">
+                    <button className='btn-principal w-40 h-10'>
+                        Volver
+                    </button>
+                </Link>
+            </div>
             <div className='flex flex-row justify-center w-full self-center'>
                 {Loading ? <LoadingComponent/> :
                     <>

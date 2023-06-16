@@ -4,7 +4,8 @@ export interface IFormulario {
     FechaInicio: Date,
     FechaTermino: Date,
     SeveridadAfasia:number,
-    Preguntas: string[]
+    LenguajeEspontaneo: boolean,
+    Preguntas: string[],
 };
 
 export interface IPacient {

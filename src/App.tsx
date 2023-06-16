@@ -6,7 +6,7 @@ const Home = lazy(()=>import("./pages/home"));
 const Evaluacion = lazy(()=>import("./pages/evaluacion"));
 const Pacientes = lazy(()=>import("./pages/pacientes"));
 
-console.log('[App.tsx]', `Hello world from Electron ${process.versions.electron}!`);
+// console.log('[App.tsx]', `Hello world from Electron ${process.versions.electron}!`);
 
 export const ThemeContext:any = createContext("");
 
