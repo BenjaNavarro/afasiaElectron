@@ -76,6 +76,8 @@ async function createWindow() {
     return { action: 'deny' }
   })
 
+  win.maximize();
+
   // Apply electron-updater
   update(win)
 }

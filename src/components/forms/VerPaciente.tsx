@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 export default function VerPaciente(props: any): JSX.Element {
 
-    const [Paciente, setPaciente] = useState<Partial<IPacient | null | undefined>>(props.pacient);
+    const [Paciente, setPaciente] = useState<Readonly<IPacient | null | undefined>>(props.pacient);
 
     // useEffect( () => console.log({props}), []);
 

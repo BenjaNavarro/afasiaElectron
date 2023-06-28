@@ -21,17 +21,14 @@ export default function EditarPaciente(props: any): JSX.Element {
         FechaNacimiento: OriginalPacient.FechaNacimiento || new Date()
     });
 
-    async function ModificarPaciente(){
-        // console.log({ModifiedPacient, props});
+    async function ModificarPaciente() : Promise<void> {
         const Paciente = { ...ModifiedPacient };
         const res = await DB.table("pacients").put({Paciente, id: props.pacient.id});
-        // console.log({res});
         if(res) SuccessAlert("","Se modificó el paciente").fire().then(res => { if(res.isConfirmed) window.location.reload() });
         else ErrorAlert("","No se pudo modificar el paciente").fire();
-        
     }
 
-    return (
+    return(
         <div className='central-rounded-div flex-col p-2'>
             <label className='w-full text-left text-xl font-bold pb-1 my-4 border-b border-dashed border-slate-800'> Editar Paciente </label>
             <div className='flex w-full my-1'>

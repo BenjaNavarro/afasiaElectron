@@ -27,9 +27,9 @@ export default function pacientes(props: any):JSX.Element {
         else setLoading(false);
     },[ Pacientes ]);
 
-    useEffect(() => {
-        console.log({paciente:sessionStorage.getItem("paciente")});
-    },[]);
+    // useEffect(() => {
+    //     console.log({paciente:sessionStorage.getItem("paciente")});
+    // },[]);
 
     return (
         <div className='page-div'>

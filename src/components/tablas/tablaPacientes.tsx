@@ -1,8 +1,7 @@
 import { ConfirmationAlert, ErrorAlert, LoadingAlert, SuccessAlert } from '@/assets/Alerts';
 import { DB } from '@/assets/DataBase';
 import { PromiseExtended } from 'dexie';
-import { session } from 'electron';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FaEye, FaPen, FaTrash, FaVideo } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { differenceInYears } from "date-fns";
@@ -38,13 +37,15 @@ export default function TablaPacientes(props: any): JSX.Element {
                             <tr className='table-row h-10 border-b border-slate-800 last:border-b-0' key={i}>
                                 <td className='border-r border-slate-800'>{paciente.Paciente.Nombre}</td>
                                 <td className='border-r border-slate-800'>{formatoRUT(paciente.Paciente.RUT)}</td>
-                                <td className='border-r border-slate-800'>{new Date(paciente.Paciente.FechaNacimiento).toLocaleDateString()} ({Math.abs(differenceInYears(new Date(paciente.Paciente.FechaNacimiento), Today))+" Años."})</td>
+                                <td className='border-r border-slate-800'>
+                                    {new Date(paciente.Paciente.FechaNacimiento).toLocaleDateString()} ({Math.abs(differenceInYears(new Date(paciente.Paciente.FechaNacimiento), Today))+" Años"})
+                                </td>
                                 <td className='flex flex-wrap justify-center items-center'>
                                     <button className='btn-tabla' title='Editar Paciente' onClick={() => { props.setEdit(true); props.setPacient(paciente) }}>
                                         <FaPen className='btn-icon'/>
                                     </button>
                                     <button className='btn-tabla' title='Eliminar Paciente' 
-                                    onClick={() => {  ConfirmationAlert("","Eliminará al paciente!").fire().then( res => { if(res.isConfirmed) EliminarPaciente(paciente.id) }) }}>
+                                    onClick={() => { ConfirmationAlert("","Eliminará al paciente!").fire().then( res => { if(res.isConfirmed) EliminarPaciente(paciente.id) }) }}>
                                         <FaTrash className='btn-icon'/>
                                     </button>
                                     <button className='btn-tabla' title='Ver Paciente' onClick={() => {props.setDatosPaciente(true); props.setPacient(paciente)} }>

@@ -1,46 +1,19 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IFormulario, IPacient, Severidades } from '@/assets/Constants';
 import ReactDatePicker from 'react-datepicker';
 import { differenceInYears } from "date-fns";
 import { formatoRUT } from '@/assets/Utils';
+import { FaCheck, FaPen, FaPlus, FaTimes, FaTrash } from 'react-icons/fa';
 
-export default function FormularioEtapa1(props:any):JSX.Element {
+export default function FormularioEtapa1(props:any) : JSX.Element {
+
+    const { Paciente, Form, setForm, EditingQuestions, handleEditInput, handleAddQuestion, handleEditQuestion, handleEnterPress, 
+        AddQuestion, setAddQuestion, setNewQuestion, NewQuestion, handleRemoveQuestion } = props;
 
     const Today = new Date();
-    const [Paciente, setPaciente] = useState<Partial<IPacient | null | undefined>>(null);
-    const [AddQuestion, setAddQuestion] = useState(false);
-    const [NewQuestion, setNewQuestion] = useState("");
 
-    // useEffect(() => {
-    //     console.log({props});
-    // }, []);
-
-    useEffect(() => {
-        // console.log({FechaNacimiento:props.Paciente.FechaNacimiento});
-        if(props.Paciente) setPaciente(props.Paciente.Paciente);
-    }, [props.Paciente]);
-
-    const [Form, setForm] = useState<Partial<IFormulario>>({
-        Numero:"",
-        Diagnostico:"",
-        FechaInicio: new Date(),
-        FechaTermino: new Date(),
-        SeveridadAfasia: 5,
-        LenguajeEspontaneo: false,
-        Preguntas: []
-    });
-
-    const handleAddQuestion = function(){
-        const form: Partial<IFormulario> = Form;
-        const preguntas: string[] | undefined = form.Preguntas?.slice();
-        preguntas?.push(NewQuestion);
-        form.Preguntas = preguntas;
-        setForm(form);
-        setNewQuestion("");
-    }
-
-    return (
-        <div className='central-rounded-div flex-col p-4 ml-6'>
+    return(
+        <div className='central-rounded-div flex-col p-6 ml-6 overflow-y-auto overflow-x-hidden max-h-none'>
             <div className='flex w-full my-1'>
                 <label className='label-form w-1/3 text-center'>{Paciente?.Nombre}</label>
                 <label className='label-form w-1/3 text-center'>{formatoRUT(Paciente?.RUT||"")}</label>
@@ -74,24 +47,51 @@ export default function FormularioEtapa1(props:any):JSX.Element {
                 <label className='label-form w-1/4'>Lenguaje Espontáneo</label>
                 <input type='checkbox' checked={Form.LenguajeEspontaneo} onChange={(e:React.ChangeEvent<HTMLInputElement>) => setForm({...Form,LenguajeEspontaneo:e.target.checked})}/>
             </div>
-            {Form.Preguntas?.map((p,i) => {
-                return( <label key={i}> {p} </label> );
-            })}
-            {AddQuestion &&
-                <div className='flex flex-col'>
-                    <div className='flex w-full my-1'>
-                        <label className='label-form w-1/4'>Nueva Pregunta</label>
-                        <input type='text' className='input-form w-3/4' value={NewQuestion} onChange={e => setNewQuestion(e.target.value)}/>
-                    </div>
-                    <button className='btn-principal w-40 h-10' onClick={() => handleAddQuestion()}>
-                        Confirmar
-                    </button>
-                </div>
+            {Form.Preguntas && Form.Preguntas?.length > 0 && 
+                <label className='text-lg font-bold text-left'>
+                    Preguntas:
+                </label>
             }
-            <div className='flex w-full justify-start'>
-                <button className='btn-principal w-40 h-10' onClick={() => setAddQuestion(!AddQuestion)}>
-                    {AddQuestion?"Cancelar":"Añadir Pregunta"}
-                </button>
+            {Form.Preguntas?.map(( p : string, i : number ) => 
+                <div className='flex items-center w-full text-base' key={i}> 
+                    <label className='text-left font-bold'> {i+1} </label>
+                    {EditingQuestions[i] ?
+                        <input className='w-full input-form mx-1 p-0' value={p} onChange={(e) => handleEditInput(e,i)}/>
+                        :
+                        <label className='w-full text-center'> {p} </label>
+                    }
+                    <button className='btn-tabla' title={EditingQuestions[i] ?'Terminar':'Editar'} onClick={() => handleEditQuestion(i)}>
+                        {EditingQuestions[i] ?
+                            <FaCheck className='btn-icon'/> : <FaPen className='btn-icon'/>
+                        }
+                    </button>
+                    <button className='btn-tabla' title='Eliminar' onClick={() => handleRemoveQuestion(i)}>
+                        <FaTrash className='btn-icon'/>
+                    </button>
+                </div> 
+            )}
+            <div className='flex w-full'>
+                {AddQuestion ?
+                    <>
+                        <label className='label-form w-1/4'>Nueva Pregunta</label>
+                        <input type='text' className='input-form w-3/4' value={NewQuestion} onChange={e => setNewQuestion(e.target.value)} onKeyDown={e => handleEnterPress(e)}
+                        placeholder='Escriba una pregunta'/>
+                        <button className='btn-tabla' onClick={() => handleAddQuestion()} disabled={!NewQuestion}>
+                            <FaPlus className='btn-icon scale-100'/>
+                        </button>
+                        <button className='btn-tabla' onClick={() => setAddQuestion(false)}>
+                            <FaTimes className="btn-icon"/>
+                        </button>
+                    </>
+                    :
+                    <button className='btn-principal w-full h-10' onClick={() => setAddQuestion(true)}>
+                        Añadir Pregunta
+                    </button>
+                }
+            </div>
+            <div className='flex w-full my-1'>
+                <label className='label-form w-1/4'>Observaciones</label>
+                <textarea className='input-form w-3/4' value={Form.Observaciones || ""} placeholder='Observaciones del Paciente' onChange={(e:React.ChangeEvent<HTMLTextAreaElement>) => setForm({ ...Form, Observaciones : e.target.value })}/>
             </div>
         </div>
     );

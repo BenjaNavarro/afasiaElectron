@@ -1,11 +1,14 @@
 export interface IFormulario {
     Numero: string,
+    Paciente: string,
     Diagnostico: string,
     FechaInicio: Date,
     FechaTermino: Date,
     SeveridadAfasia:number,
     LenguajeEspontaneo: boolean,
     Preguntas: string[],
+    Archivo: string,
+    Observaciones: string,
 };
 
 export interface IPacient {
