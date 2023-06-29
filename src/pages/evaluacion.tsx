@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import Header from '@/components/utils/Header';
+// import Header from '@/components/utils/Header';
 import FormularioEtapa1 from '@/components/forms/FormularioEtapa1';
 import VideoRecorder from '@/components/utils/VideoRecorder';
 import { IFormulario, IPacient } from '@/assets/Constants';
@@ -7,18 +7,17 @@ import { Link, useLocation } from 'react-router-dom';
 import { DB } from '@/assets/DataBase';
 import LoadingComponent from '@/components/utils/LoadingComponent';
 import Swal from 'sweetalert2';
-import { BrowserWindow } from 'electron';
 import { IndexableType } from 'dexie';
 import { ErrorAlert, SuccessAlert } from '@/assets/Alerts';
 
 export default function Evaluacion(props:any) : JSX.Element {
 
-    const [ Paciente, setPaciente ] = useState<Partial<IPacient | null | undefined>>(null);
+    const [ Paciente, setPaciente ] = useState<any>(null);
     const [ Loading, setLoading ] = useState<boolean>(true);
     const { state } = useLocation();
     const [ Form, setForm ] = useState<Partial<IFormulario>>({
         Numero:"",
-        Paciente: Paciente?.RUT,
+        Paciente: "",
         Diagnostico:"",
         FechaInicio: new Date(),
         FechaTermino: new Date(),
@@ -113,7 +112,7 @@ export default function Evaluacion(props:any) : JSX.Element {
                 const a = document.createElement("a");
                 a.href = videoURL;
                 const Timestamp : string = new Date().getTime().toString();
-                const fileName = Paciente?.RUT+"_"+Timestamp;
+                const fileName = Paciente.Paciente?.RUT+"_"+Timestamp;
                 a.download = fileName;
                 document.body.appendChild(a);
                 a.click();
@@ -121,8 +120,8 @@ export default function Evaluacion(props:any) : JSX.Element {
 
                 const id : IndexableType = await DB.table("forms").add({ Form });
                 
-                if(id) SuccessAlert("","Se ha creado la evaluación").fire().then(res => { if(res.isConfirmed) window.location.reload()});
-                else ErrorAlert("","No se pudo crear la evaluación").fire()
+                if(id) SuccessAlert("","Se ha creado la evaluación").fire().then(res => { if(res.isConfirmed) window.location.href = "/pacientes"});
+                else ErrorAlert("","No se pudo crear la evaluación").fire();
                 // console.log({message: "OK"});
             }
         } catch (error) {
@@ -152,6 +151,7 @@ export default function Evaluacion(props:any) : JSX.Element {
                 
                 if(result) {
                     setPaciente(result);
+                    setForm({...Form,Paciente:result.Paciente.RUT});
                     setLoading(false);
                 }
             }
@@ -160,10 +160,9 @@ export default function Evaluacion(props:any) : JSX.Element {
         LoadPaciente();
     }, []);
 
-    useEffect(() => {
-        if(props.Paciente) setPaciente(props.Paciente.Paciente);
-    }, [props.Paciente]);
-
+    // useEffect(() => {
+    //     if(props.Paciente) setPaciente(props.Paciente.Paciente);
+    // }, [props.Paciente]);
 
     const handleAddQuestion = function() : void {
         let preguntas = Form.Preguntas?.slice();

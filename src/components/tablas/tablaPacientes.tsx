@@ -2,7 +2,7 @@ import { ConfirmationAlert, ErrorAlert, LoadingAlert, SuccessAlert } from '@/ass
 import { DB } from '@/assets/DataBase';
 import { PromiseExtended } from 'dexie';
 import { useState } from 'react';
-import { FaEye, FaPen, FaTrash, FaVideo } from 'react-icons/fa';
+import { FaEye, FaFileArchive, FaPen, FaTrash, FaVideo } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { differenceInYears } from "date-fns";
 import { formatoRUT } from '@/assets/Utils';
@@ -50,6 +50,9 @@ export default function TablaPacientes(props: any): JSX.Element {
                                     </button>
                                     <button className='btn-tabla' title='Ver Paciente' onClick={() => {props.setDatosPaciente(true); props.setPacient(paciente)} }>
                                         <FaEye className='btn-icon'/>
+                                    </button>
+                                    <button className='btn-tabla' title='Evaluaciones Paciente' onClick={() => { props.setPacient(paciente); props.setVerEvaluaciones(true) }}>
+                                        <FaFileArchive className='btn-icon'/>
                                     </button>
                                     <button className='btn-tabla' title='Iniciar Evaluación'>
                                         <Link to={"/evaluacion"} state={{ paciente: paciente.id }} className='contents'>

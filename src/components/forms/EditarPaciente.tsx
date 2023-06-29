@@ -3,13 +3,13 @@ import ReactDatePicker, { registerLocale } from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import es from "date-fns/locale/es";
 import { GenderOptions, IPacient } from '@/assets/Constants';
-import { ConfirmationAlert, ErrorAlert, SuccessAlert } from '@/assets/Alerts';
+import { ConfirmationAlert, ErrorAlert, LoadingAlert, SuccessAlert } from '@/assets/Alerts';
 import { DB } from '@/assets/DataBase';
 registerLocale("es", es);
 
 export default function EditarPaciente(props: any): JSX.Element {
 
-    const OriginalPacient = props.pacient.Paciente;
+    const OriginalPacient : IPacient = props.pacient.Paciente;
 
     const [ ModifiedPacient, setModifiedPacient ] = useState<Partial<IPacient>>({
         Nombre: OriginalPacient.Nombre || "",
@@ -22,6 +22,7 @@ export default function EditarPaciente(props: any): JSX.Element {
     });
 
     async function ModificarPaciente() : Promise<void> {
+        LoadingAlert();
         const Paciente = { ...ModifiedPacient };
         const res = await DB.table("pacients").put({Paciente, id: props.pacient.id});
         if(res) SuccessAlert("","Se modificó el paciente").fire().then(res => { if(res.isConfirmed) window.location.reload() });

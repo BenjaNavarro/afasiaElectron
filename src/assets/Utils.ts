@@ -42,3 +42,16 @@ export function ValidaRUT(rutCompleto: string) : boolean {
     
     return (Modulo11(rut).toString() === digv);
 }
+
+export default function formatoRutSinpunto(rut : string){
+    // XXXXXXXX-X
+    if (!rut) return "";
+
+    const nuevoRut = rut.replace(/\./g,'').replace(/\-/g, '').trim().toLowerCase();
+    const ultimoDigito = nuevoRut.substr(-1, 1);
+    const rutDigito = nuevoRut.substr(0, nuevoRut.length-1)
+    const format = rutDigito
+
+    if (rut.length!=0) return format.concat("-",ultimoDigito);
+    else return "";  
+}

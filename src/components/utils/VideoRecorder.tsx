@@ -83,7 +83,7 @@ export default function VideoRecorder(props:any) {
                         }else{
                             Swal.fire({
                                 title:'',
-                                text:'¿Desea detener la grabación?',
+                                text:'¿Desea terminar la Evaluación del Paciente?',
                                 icon:'question',
                                 confirmButtonText:'Sí',
                                 showCancelButton:true,
@@ -93,7 +93,7 @@ export default function VideoRecorder(props:any) {
                             }));
                         }
                     }}>
-                        { Status !== StatusList.ALLOWED ? "Detener Grabación" : "Comenzar" }
+                        { Status !== StatusList.ALLOWED ? "Terminar" : "Comenzar" }
                     </button> 
                 }
                 </div>

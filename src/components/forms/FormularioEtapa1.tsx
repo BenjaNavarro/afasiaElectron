@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { IFormulario, IPacient, Severidades } from '@/assets/Constants';
-import ReactDatePicker from 'react-datepicker';
+import ReactDatePicker, { registerLocale } from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+import es from "date-fns/locale/es";
 import { differenceInYears } from "date-fns";
 import { formatoRUT } from '@/assets/Utils';
 import { FaCheck, FaPen, FaPlus, FaTimes, FaTrash } from 'react-icons/fa';
+
+registerLocale("es",es);
 
 export default function FormularioEtapa1(props:any) : JSX.Element {
 
@@ -15,9 +19,9 @@ export default function FormularioEtapa1(props:any) : JSX.Element {
     return(
         <div className='central-rounded-div flex-col p-6 ml-6 overflow-y-auto overflow-x-hidden max-h-none'>
             <div className='flex w-full my-1'>
-                <label className='label-form w-1/3 text-center'>{Paciente?.Nombre}</label>
-                <label className='label-form w-1/3 text-center'>{formatoRUT(Paciente?.RUT||"")}</label>
-                <label className='label-form w-1/3 text-center'>{Paciente?.FechaNacimiento ? Math.abs(differenceInYears(Paciente?.FechaNacimiento, Today))+ " Años" : ""}</label>
+                <label className='label-form w-1/3 text-center'>{Paciente.Paciente?.Nombre}</label>
+                <label className='label-form w-1/3 text-center'>{formatoRUT(Paciente.Paciente?.RUT||"")}</label>
+                <label className='label-form w-1/3 text-center'>{Paciente.Paciente?.FechaNacimiento ? Math.abs(differenceInYears(Paciente.Paciente?.FechaNacimiento, Today))+ " Años" : ""}</label>
             </div>
             <div className='flex w-full my-1'>
                 <label className='label-form w-1/4'>Grado de Severidad</label>
@@ -29,19 +33,23 @@ export default function FormularioEtapa1(props:any) : JSX.Element {
             </div>
             <div className='flex w-full my-1'>
                 <label className='label-form w-1/4'>Número</label>
-                <input type='text' className='input-form w-3/4' value={Form.Numero || ""} placeholder='Número de Ficha' onChange={(e:React.ChangeEvent<HTMLInputElement>) => setForm({...Form,Numero:e.target.value})}/>
+                <input type='text' className='input-form w-3/4' value={Form.Numero || ""} placeholder='Número de Ficha' 
+                onChange={(e:React.ChangeEvent<HTMLInputElement>) => setForm({...Form,Numero:e.target.value})}/>
             </div>
             <div className='flex w-full my-1'>
                 <label className='label-form w-1/4'>Diagnóstico</label>
-                <textarea className='input-form w-3/4' value={Form.Diagnostico || ""} placeholder='Diagnóstico de Paciente' onChange={(e:React.ChangeEvent<HTMLTextAreaElement>) => setForm({...Form,Diagnostico:e.target.value})}/>
+                <textarea className='input-form w-3/4' value={Form.Diagnostico || ""} placeholder='Diagnóstico de Paciente' 
+                onChange={(e:React.ChangeEvent<HTMLTextAreaElement>) => setForm({...Form,Diagnostico:e.target.value})}/>
             </div>
             <div className='flex w-full my-1'>
                 <label className='label-form w-1/4'>Fecha Inicio</label>
-                <ReactDatePicker selected={Form.FechaInicio} onChange={(date: Date) => setForm({ ...Form, FechaInicio: date })} className='input-form w-3/4' wrapperClassName='w-full'/>
+                <ReactDatePicker selected={Form.FechaInicio} onChange={(date: Date) => setForm({ ...Form, FechaInicio: date })} className='input-form w-3/4' wrapperClassName='w-full'
+                locale="es" dateFormat="dd/MM/yyyy" dropdownMode="select" peekNextMonth showMonthDropdown showYearDropdown placeholderText='Fecha Inicio'/>
             </div>
             <div className='flex w-full my-1'>
                 <label className='label-form w-1/4'>Fecha Término</label>
-                <ReactDatePicker selected={Form.FechaTermino} onChange={(date:Date) => setForm({...Form, FechaTermino: date})} className='input-form w-3/4' wrapperClassName='w-full'/>
+                <ReactDatePicker selected={Form.FechaTermino} onChange={(date:Date) => setForm({...Form, FechaTermino: date})} className='input-form w-3/4' wrapperClassName='w-full'
+                locale="es" dateFormat="dd/MM/yyyy" dropdownMode="select" peekNextMonth showMonthDropdown showYearDropdown placeholderText='Fecha Término'/>
             </div>
             <div className='flex w-full my-1'>
                 <label className='label-form w-1/4'>Lenguaje Espontáneo</label>

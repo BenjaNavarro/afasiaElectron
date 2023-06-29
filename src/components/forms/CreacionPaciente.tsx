@@ -7,7 +7,7 @@ import es from "date-fns/locale/es";
 import { IPacient, GenderOptions } from '@/assets/Constants';
 import { DB } from '@/assets/DataBase';
 import { ConfirmationAlert, ErrorAlert, LoadingAlert, SuccessAlert } from '@/assets/Alerts';
-import { ValidaRUT, formatoRUT } from '@/assets/Utils';
+import formatoRutSinpunto, { ValidaRUT, formatoRUT } from '@/assets/Utils';
 registerLocale("es", es);
 
 export default function CreacionPaciente(props: any) : JSX.Element {
@@ -30,6 +30,7 @@ export default function CreacionPaciente(props: any) : JSX.Element {
 
     async function CrearPaciente(): Promise<void> {
         LoadingAlert();
+        setPaciente({...Paciente, RUT: formatoRutSinpunto(Paciente.RUT || "")})
         const id : IndexableType = await DB.table("pacients").add({ Paciente });
         if(id) SuccessAlert("","Se ha creado el usuario").fire().then(res => { if(res.isConfirmed) window.location.reload()});
         else ErrorAlert("","No se pudo crear el usuario").fire();
@@ -40,7 +41,7 @@ export default function CreacionPaciente(props: any) : JSX.Element {
             <div className='flex w-full my-1'>
                 <label className='label-form w-1/4'>Nombre Paciente</label>
                 <input type='text' className='input-form w-3/4' value={Paciente?.Nombre || ""} onChange={(e:React.ChangeEvent<HTMLInputElement>) => setPaciente({...Paciente,Nombre:e.target.value})}
-                placeholder='José González' required onFocus={() => setNameTouched(true)}/>
+                placeholder='José González' required onBlur={() => setNameTouched(true)}/>
             </div>
             {NameTouched && !Paciente.Nombre ?
                 <label className='label-error'>
@@ -54,7 +55,7 @@ export default function CreacionPaciente(props: any) : JSX.Element {
             <div className='flex w-full my-1'>
                 <label className='label-form w-1/4'>RUT Paciente</label>
                 <input type='text' className='input-form w-3/4' value={formatoRUT(Paciente?.RUT || "") || ""} onChange={(e:React.ChangeEvent<HTMLInputElement>) => setPaciente({...Paciente,RUT:formatoRUT(e.target.value)})} 
-                placeholder='11.111.111-1' required onFocus={() => setRutTouched(true)}/>
+                placeholder='11.111.111-1' required onBlur={() => setRutTouched(true)}/>
             </div>
             {RutTouched && !Paciente.RUT ? 
                 <label className='label-error'>
@@ -91,8 +92,8 @@ export default function CreacionPaciente(props: any) : JSX.Element {
             </div>
             <div className='flex w-full my-1'>
                 <label className='label-form w-1/4 mr-[6.5%]'>Fecha de Nacimiento</label>
-                <ReactDatePicker selected={new Date(Paciente.FechaNacimiento||"")} locale="es" dateFormat="dd/MM/yyyy" dropdownMode="select" wrapperClassName="react-datepicker-wrapper" className='input-form w-full'
-                onChange={(date:Date) => setPaciente({...Paciente, FechaNacimiento: date})} placeholderText="Fecha inicial" peekNextMonth showMonthDropdown showYearDropdown onFocus={() => setDateTouched(true)}/>
+                <ReactDatePicker selected={new Date(Paciente.FechaNacimiento||"")} locale="es" dateFormat="dd/MM/yyyy" dropdownMode="select" wrapperClassName="w-full" className='input-form w-full'
+                onChange={(date:Date) => setPaciente({...Paciente, FechaNacimiento: date})} placeholderText="Fecha Nacimiento" peekNextMonth showMonthDropdown showYearDropdown onBlur={() => setDateTouched(true)}/>
             </div>
             {DateTouched && Math.abs(differenceInYears(Paciente.FechaNacimiento || new Date(), HOY )) < 18 &&
                 <label className='label-error'>

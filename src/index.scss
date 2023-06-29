@@ -7,7 +7,7 @@
         @apply text-center text-slate-900 border rounded border-slate-800 hover:shadow-lg self-center focus:outline-none;
     };
     .page-div {
-        @apply w-[1366px] lg:w-full justify-center h-screen max-h-screen flex flex-col bg-slate-50 text-slate-900 text-center overflow-hidden;
+        @apply w-[1366px] lg:w-full items-center h-screen max-h-screen flex flex-col bg-slate-50 text-slate-900 text-center overflow-hidden;
     };
     .btn-transparente {
         @apply self-center text-center hover:shadow-lg hover:outline hover:outline-1 hover:outline-slate-900 p-1 m-1 rounded-lg;
